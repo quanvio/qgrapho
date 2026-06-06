@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Strips Cursor co-author trailers from commit messages (local hook).
+# Install: ./scripts/install-git-hooks.sh
+
+MSG_FILE="$1"
+[[ -f "$MSG_FILE" ]] || exit 0
+
+if sed --version >/dev/null 2>&1; then
+  sed -i '/[Cc]o-authored-by:.*cursoragent@cursor\.com/d' "$MSG_FILE"
+  sed -i '/[Mm]ade-with:.*[Cc]ursor/d' "$MSG_FILE"
+else
+  sed -i '' '/[Cc]o-authored-by:.*cursoragent@cursor\.com/d' "$MSG_FILE"
+  sed -i '' '/[Mm]ade-with:.*[Cc]ursor/d' "$MSG_FILE"
+fi

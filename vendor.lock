@@ -1,0 +1,11 @@
+# QGrapho vendor pins
+# Add git submodules under vendor/ and record commits here.
+# Public repo — no upstream secrets.
+
+[qgrapho]
+version = "0.0.1"
+
+# Example (uncomment when submodules are added):
+# [vendor.jcode]
+# repo = "https://github.com/1jehuang/jcode"
+# commit = "REPLACE_AT_PIN_TIME"

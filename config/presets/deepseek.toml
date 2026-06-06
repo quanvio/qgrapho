@@ -1,0 +1,26 @@
+# DeepSeek — enable in config.toml
+# Docs: https://api-docs.deepseek.com/
+# Key:  export DEEPSEEK_API_KEY="sk-..."
+
+[[providers]]
+id = "deepseek"
+label = "DeepSeek"
+base_url = "https://api.deepseek.com"
+api_key_env = "DEEPSEEK_API_KEY"
+enabled = true
+
+  [[providers.models]]
+  id = "deepseek-v4-flash"
+  label = "DeepSeek V4 Flash"
+  context_window = 1000000
+  tags = ["chat", "fast", "code"]
+
+  [[providers.models]]
+  id = "deepseek-v4-pro"
+  label = "DeepSeek V4 Pro"
+  context_window = 1000000
+  tags = ["code", "plan", "reason"]
+
+# Legacy aliases (retire ~2026-07-24) — prefer v4 ids above
+#   deepseek-chat      → non-thinking v4-flash
+#   deepseek-reasoner  → thinking v4-flash

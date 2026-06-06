@@ -1,0 +1,16 @@
+# dev-isolated — optional Agent Engine container only
+# Use for untrusted code or shared machines.
+
+profile: isolated
+
+runtime:
+  agent_engine: docker    # one container; host runs Console + graphs native
+
+components:
+  console: native
+  agent_engine: container
+  graph_intelligence: native
+  model_router: native
+
+models:
+  mode: byok

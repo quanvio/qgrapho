@@ -1,0 +1,57 @@
+# Moonshot AI (Kimi) — enable in config.toml
+# Docs: https://platform.moonshot.ai/docs/api/overview
+# Key:  export MOONSHOT_API_KEY="sk-..."
+#
+# Global:  https://api.moonshot.ai/v1
+# China:   https://api.moonshot.cn/v1
+
+[[providers]]
+id = "moonshot"
+label = "Moonshot (Kimi)"
+base_url = "https://api.moonshot.ai/v1"
+api_key_env = "MOONSHOT_API_KEY"
+enabled = true
+
+  [[providers.models]]
+  id = "kimi-k2.6"
+  label = "Kimi K2.6"
+  context_window = 256000
+  tags = ["chat", "code", "plan", "agent", "vision", "doc", "video_in"]
+  [providers.models.modalities]
+  input = ["text", "image", "video", "file"]
+  output = ["text"]
+
+  [[providers.models]]
+  id = "kimi-k2.5"
+  label = "Kimi K2.5"
+  context_window = 256000
+  tags = ["chat", "code", "plan"]
+
+  [[providers.models]]
+  id = "moonshot-v1-8k-vision-preview"
+  label = "Moonshot Vision 8K"
+  context_window = 8000
+  tags = ["vision", "diagram"]
+  [providers.models.modalities]
+  input = ["text", "image"]
+  output = ["text"]
+
+  [[providers.models]]
+  id = "kimi-k2-turbo-preview"
+  label = "Kimi K2 Turbo"
+  context_window = 256000
+  tags = ["fast", "chat", "agent"]
+
+  [[providers.models]]
+  id = "kimi-k2-thinking"
+  label = "Kimi K2 Thinking"
+  context_window = 256000
+  tags = ["plan", "reason", "code"]
+
+  [[providers.models]]
+  id = "moonshot-v1-8k"
+  label = "Moonshot V1 8K"
+  context_window = 8000
+  tags = ["chat", "fast"]
+
+# Note: older kimi-k2-* preview ids were deprecated May 2026 — use kimi-k2.6

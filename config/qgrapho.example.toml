@@ -1,0 +1,287 @@
+# QGrapho — copy to ~/.qgrapho/config.toml
+# Run: qgrapho init   (interactive — picks a provider in 30 seconds)
+#
+# Models are 100% optional vendor-agnostic. Use ANY OpenAI-compatible provider.
+# QGrapho Cloud is an optional hosted preset — not required until the endpoint is live.
+
+[product]
+name = "QGrapho"
+
+# ── Model router (add as many providers as you want) ─────────────────────
+
+[models]
+default_provider = "openai"       # active provider id
+default_model = "gpt-4o-mini"     # default model for general tasks
+
+# Smart routing — QGrapho picks the best configured model per task type.
+# Each value is "provider_id/model_id". Falls back to default_model.
+[routing]
+# ── Text / agents ──
+chat   = "openai/gpt-4o-mini"
+code   = "openai/gpt-4o"
+plan   = "openai/gpt-4o"
+fast   = "openai/gpt-4o-mini"
+agent  = "openai/gpt-4o"
+reason = "openai/gpt-4o"
+# ── Vision, docs, media ──
+vision    = "openai/gpt-4o"                 # screenshots, UI, diagrams in
+diagram   = "openai/gpt-4o"                 # whiteboard / arch photos
+doc       = "openai/gpt-4o"                 # PDF, long documents
+ocr       = "openai/gpt-4o"
+image_out = "openai/dall-e-3"               # generate images
+audio_in  = "openai/whisper-1"              # transcribe
+audio_out = "openai/tts-1"                  # text-to-speech
+# ── Search / memory ──
+embed  = "openai/text-embedding-3-small"
+search = "openai/text-embedding-3-small"
+
+# ── Provider: OpenAI (example — bring your own key) ──────────────────────
+
+[[providers]]
+id = "openai"
+label = "OpenAI"
+base_url = "https://api.openai.com/v1"
+api_key_env = "OPENAI_API_KEY"
+enabled = true
+
+  [[providers.models]]
+  id = "gpt-4o"
+  label = "GPT-4o"
+  context_window = 128000
+  tags = ["code", "plan", "vision", "doc", "diagram", "ocr"]
+  [providers.models.modalities]
+  input = ["text", "image", "file"]
+  output = ["text"]
+  [providers.models.modalities.features]
+  tools = true
+  streaming = true
+
+  [[providers.models]]
+  id = "gpt-4o-mini"
+  label = "GPT-4o Mini"
+  context_window = 128000
+  tags = ["chat", "fast", "vision"]
+  [providers.models.modalities]
+  input = ["text", "image"]
+  output = ["text"]
+
+  [[providers.models]]
+  id = "dall-e-3"
+  label = "DALL-E 3"
+  tags = ["image_out"]
+  [providers.models.modalities]
+  input = ["text"]
+  output = ["image"]
+
+  [[providers.models]]
+  id = "whisper-1"
+  label = "Whisper"
+  tags = ["audio_in"]
+  [providers.models.modalities]
+  input = ["audio"]
+  output = ["text"]
+
+  [[providers.models]]
+  id = "tts-1"
+  label = "TTS"
+  tags = ["audio_out"]
+  [providers.models.modalities]
+  input = ["text"]
+  output = ["audio"]
+
+  [[providers.models]]
+  id = "text-embedding-3-small"
+  label = "Embeddings Small"
+  tags = ["embed", "search"]
+  [providers.models.modalities]
+  input = ["text"]
+  output = ["embed"]
+
+  [[providers.models]]
+  id = "text-embedding-3-large"
+  label = "Embeddings Large"
+  tags = ["embed"]
+  [providers.models.modalities]
+  input = ["text"]
+  output = ["embed"]
+
+# ── Provider: DeepSeek (V4 Flash + V4 Pro) ───────────────────────────────
+# Docs: https://api-docs.deepseek.com/
+# qgrapho provider add deepseek
+
+# [[providers]]
+# id = "deepseek"
+# label = "DeepSeek"
+# base_url = "https://api.deepseek.com"
+# api_key_env = "DEEPSEEK_API_KEY"
+# enabled = false
+#
+#   [[providers.models]]
+#   id = "deepseek-v4-flash"
+#   label = "DeepSeek V4 Flash"
+#   context_window = 1000000
+#   tags = ["chat", "fast", "code"]
+#
+#   [[providers.models]]
+#   id = "deepseek-v4-pro"
+#   label = "DeepSeek V4 Pro"
+#   context_window = 1000000
+#   tags = ["code", "plan", "reason"]
+
+# ── Provider: Moonshot / Kimi (K2.6, K2.5, Turbo, Thinking) ────────────
+# Docs: https://platform.moonshot.ai/docs/models
+# China base_url: https://api.moonshot.cn/v1
+# qgrapho provider add moonshot
+
+# [[providers]]
+# id = "moonshot"
+# label = "Moonshot (Kimi)"
+# base_url = "https://api.moonshot.ai/v1"
+# api_key_env = "MOONSHOT_API_KEY"
+# enabled = false
+#
+#   [[providers.models]]
+#   id = "kimi-k2.6"
+#   label = "Kimi K2.6"
+#   context_window = 256000
+#   tags = ["chat", "code", "plan", "agent", "vision", "doc", "video_in"]
+#   [providers.models.modalities]
+#   input = ["text", "image", "video", "file"]
+#   output = ["text"]
+#
+#   [[providers.models]]
+#   id = "kimi-k2.5"
+#   label = "Kimi K2.5"
+#   tags = ["code", "plan"]
+#
+#   [[providers.models]]
+#   id = "kimi-k2-turbo-preview"
+#   label = "Kimi K2 Turbo"
+#   tags = ["fast", "chat"]
+#
+#   [[providers.models]]
+#   id = "kimi-k2-thinking"
+#   label = "Kimi K2 Thinking"
+#   tags = ["plan", "reason"]
+
+# ── Provider: Grok / xAI (Grok 4.3, Build, 4.20) ─────────────────────────
+# Docs: https://docs.x.ai/developers/models
+# qgrapho provider add grok
+
+# [[providers]]
+# id = "grok"
+# label = "Grok (xAI)"
+# base_url = "https://api.x.ai/v1"
+# api_key_env = "XAI_API_KEY"
+# enabled = false
+#
+#   [[providers.models]]
+#   id = "grok-4.3"
+#   label = "Grok 4.3"
+#   context_window = 1000000
+#   tags = ["chat", "code", "plan", "agent"]
+#
+#   [[providers.models]]
+#   id = "grok-build-0.1"
+#   label = "Grok Build"
+#   tags = ["code"]
+#
+#   [[providers.models]]
+#   id = "grok-4.20-0309-reasoning"
+#   label = "Grok 4.20 Reasoning"
+#   tags = ["plan", "reason"]
+
+# ── Smart routing example (multi-provider — uncomment providers above first) ─
+# [routing]
+# chat  = "deepseek/deepseek-v4-flash"
+# code  = "deepseek/deepseek-v4-pro"
+# plan  = "moonshot/kimi-k2.6"
+# vision = "openai/gpt-4o"
+# doc   = "moonshot/kimi-k2.6"
+# image_out = "openai/dall-e-3"
+# embed = "openai/text-embedding-3-large"
+
+# ── Provider: OpenRouter (one key, many models) ────────────────────────────
+# qgrapho provider add openrouter
+
+# [[providers]]
+# id = "openrouter"
+# label = "OpenRouter"
+# base_url = "https://openrouter.ai/api/v1"
+# api_key_env = "OPENROUTER_API_KEY"
+# enabled = false
+#
+#   [[providers.models]]
+#   id = "deepseek/deepseek-v4-pro"
+#   tags = ["code"]
+#
+#   [[providers.models]]
+#   id = "moonshotai/kimi-k2.6"
+#   tags = ["plan"]
+
+# ── Provider: Anthropic via OpenAI-compatible proxy (example) ─────────────
+
+# [[providers]]
+# id = "anthropic"
+# label = "Anthropic"
+# base_url = "https://api.anthropic.com/v1"   # or your proxy URL
+# api_key_env = "ANTHROPIC_API_KEY"
+# enabled = false
+#
+#   [[providers.models]]
+#   id = "claude-sonnet-4-20250514"
+#   tags = ["code", "plan"]
+
+# ── Provider: Ollama on your machine (local, free) ───────────────────────
+
+# [[providers]]
+# id = "ollama"
+# label = "Ollama (local)"
+# base_url = "http://localhost:11434/v1"
+# api_key_env = ""                # no key needed
+# enabled = false
+#
+#   [[providers.models]]
+#   id = "qwen2.5-coder:7b"
+#   tags = ["code", "fast"]
+
+# ── Provider: QGrapho Cloud — OPTIONAL suggested preset ────────────────────
+# Enable when https://qgrapho.quanvio.com/v1 is live. Set enabled = false otherwise.
+
+# [[providers]]
+# id = "qgrapho-cloud"
+# label = "QGrapho Cloud (optional)"
+# base_url = "https://qgrapho.quanvio.com/v1"
+# api_key_env = "QGRAPHO_CLOUD_API_KEY"
+# enabled = false
+# suggested = true                # shown first in `qgrapho init` wizard
+#
+#   [[providers.models]]
+#   id = "qgrapho-default"
+#   tags = ["chat", "code"]
+
+# ── Workspace & runtime ────────────────────────────────────────────────────
+
+[workspace]
+path = ""
+mount_in_engine = "/workspace"
+
+[deploy]
+profile = "native"
+
+[console]
+enabled = true
+
+[agent_engine]
+enabled = true
+runtime = "process"
+
+[graph_intelligence]
+backend = "embedded"
+data_dir = "~/.qgrapho/data/graphs"
+
+[event_bus]
+enabled = false
+
+[insights]
+enabled = false

@@ -1,0 +1,22 @@
+# dev-native — default QGrapho profile
+# No Podman, Docker, or Kubernetes required.
+
+profile: native
+
+runtime:
+  agent_engine: process   # RUNTIME=process
+
+components:
+  console: true
+  agent_engine: true
+  graph_intelligence: true
+  model_router: true
+  event_bus: optional
+  insights: optional
+
+workspace:
+  mount: /workspace
+
+models:
+  mode: byok            # bring your own provider
+  qgrapho_cloud: false  # enable when https://qgrapho.quanvio.com/v1 is live

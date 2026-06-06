@@ -1,0 +1,39 @@
+# xAI Grok — enable in config.toml
+# Docs: https://docs.x.ai/developers/models
+# Key:  export XAI_API_KEY="xai-..."
+
+[[providers]]
+id = "grok"
+label = "Grok (xAI)"
+base_url = "https://api.x.ai/v1"
+api_key_env = "XAI_API_KEY"
+enabled = true
+
+  [[providers.models]]
+  id = "grok-4.3"
+  label = "Grok 4.3"
+  context_window = 1000000
+  tags = ["chat", "code", "plan", "agent"]
+
+  [[providers.models]]
+  id = "grok-build-0.1"
+  label = "Grok Build (coding)"
+  context_window = 256000
+  tags = ["code"]
+
+  [[providers.models]]
+  id = "grok-4.20-0309-reasoning"
+  label = "Grok 4.20 Reasoning"
+  context_window = 1000000
+  tags = ["plan", "reason"]
+
+  [[providers.models]]
+  id = "grok-4.20-0309-non-reasoning"
+  label = "Grok 4.20 Fast"
+  context_window = 1000000
+  tags = ["chat", "code", "plan", "agent", "vision"]
+
+# Image / video generation (separate Grok Imagine API — enable when on your plan)
+#   grok-imagine-image-quality
+#   grok-imagine-video
+# Voice: Grok Voice API — route via audio_in / audio_out
